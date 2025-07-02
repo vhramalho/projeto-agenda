@@ -1,0 +1,289 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f3;
+    overflow: hidden;
+}
+
+/* ===== CABEÇALHO ===== */
+header {
+    background-color: #000;
+    color: yellow;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    position: relative;
+}
+
+header h1 {
+    font-size: 18px;
+    flex: 1;
+    text-align: center;
+    color: yellow;
+    margin-left: -24px;
+    /* compensar botão do menu */
+}
+
+.botao-menu {
+    background: none;
+    border: none;
+    color: #ffff00;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+}
+
+.botao-whatsapp {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-whatsapp img {
+    width: 40px;
+    height: 40px;
+}
+
+/* ===== MENU LATERAL (oculto por padrão) ===== */
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background-color: #000000;
+    color: #ffff00;
+    transition: left 0.5s ease;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+.menu-lateral.ativo {
+    left: 0;
+}
+
+.menu-lateral ul {
+    list-style: none;
+    padding: 0 20px;
+}
+
+.menu-lateral li {
+    margin: 20px 0;
+}
+
+.menu-lateral a {
+    color: #ffff00;
+    text-decoration: none;
+}
+
+.fundo-escuro {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+
+/* ===== DATA (como no PDV) ===== */
+.data {
+    background-color: #f3f3f3;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* ===== LISTA DE HORÁRIOS ===== */
+.agenda {
+    padding: 12px;
+    overflow-y: auto;
+    height: calc(100vh - 140px);
+    /* cabeçalho + data + espaço dos botões */
+}
+
+.agenda ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agenda li {
+    background-color: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    border-left: 6px solid transparent;
+}
+
+/* Cores de status */
+.livre {
+    border-left-color: transparent;
+}
+
+.bloqueado {
+    border-left-color: red;
+}
+
+.agendado {
+    border-left-color: blue;
+}
+
+.realizado {
+    border-left-color: green;
+}
+
+/* ===== BOTÕES FLUTUANTES (⬅️ e ➡️) ===== */
+.botao-flutuante {
+    position: fixed;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: yellow;
+    box-shadow: none;
+    cursor: pointer;
+    z-index: 10;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-flutuante img {
+    width: 130%;
+    height: 130%;
+    object-fit: contain;
+}
+
+
+#btnAnterior {
+    left: 20px;
+}
+
+#btnProximo {
+    right: 20px;
+}
+
+.botoes-topo-agenda {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    position: relative;
+}
+
+.botao-topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    color: #000;
+    cursor: pointer;
+    width: 70px;
+    text-align: center;
+}
+
+.botao-topo img {
+    width: 18px;
+    height: 18px;
+    margin-bottom: 4px;
+}
+
+#data-agenda {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    color: #000;
+    flex: 1;
+}
+
+/* Modal fundo escuro */
+.modal-calendario {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Caixa do calendário */
+.calendario-container {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    width: 90%;
+    max-width: 350px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Topo com nome do mês e botões */
+.calendario-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cal-btn {
+    background-color: yellow;
+    border: none;
+    padding: 6px 12px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cal-mes {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Corpo com dias */
+.calendario-corpo {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendario-corpo div {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #eee;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calendario-corpo div:hover {
+    background-color: yellow;
+}

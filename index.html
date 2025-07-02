@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agenda Victor</title>
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+
+<body>
+
+    <!-- Cabeçalho preto com título -->
+    <header>
+        <h1>Agenda Victor</h1>
+    </header>
+
+
+    <div class="botoes-topo-agenda">
+        <div id="btnVoltarHoje" class="botao-topo" style="display: none;">
+            <img src="img/hoje.png" alt="Hoje" />
+            <span>Voltar para Hoje</span>
+        </div>
+        <!-- Data do dia (como no PDV) -->
+        <section id="data-agenda" class="data"></section>
+        <!-- Botões do Calendário -->
+        <div id="btnCalendario" class="botao-topo">
+            <img src="img/calendario.png" alt="Calendário" />
+            <span>Calendário</span>
+        </div>
+    </div>
+
+
+
+    <!-- Lista de horários do dia -->
+    <section class="agenda">
+        <ul id="lista-horarios"></ul>
+    </section>
+
+    <!-- Botões flutuantes para mudar o dia -->
+    <button id="btnAnterior" class="botao-flutuante">
+        <img src="img/seta-para-a-esquerda.png" alt="seta-para-a-esquerda">
+    </button>
+    <button id="btnProximo" class="botao-flutuante">
+        <img src="img/seta-para-a-direita.png" alt="">
+    </button>
+
+    <!-- Modal de Calendário -->
+    <div id="modal-calendario" class="modal-calendario">
+        <div class="calendario-container">
+            <div class="calendario-topo">
+                <button id="mesAnterior" class="cal-btn">«</button>
+                <span id="mesAtual" class="cal-mes">Julho 2025</span>
+                <button id="mesSeguinte" class="cal-btn">»</button>
+            </div>
+            <div class="calendario-corpo" id="calendarioCorpo">
+                <!-- Dias serão inseridos por JS -->
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="javaScript/index.js"></script>
+    <script src="javaScript/menu.js"></script>
+</body>
+
+</html>
