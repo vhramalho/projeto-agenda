@@ -59,6 +59,46 @@
         </div>
     </div>
 
+    <!-- Modal: Agendar ou Bloquear -->
+    <div id="modal-opcoes" class="modal-opcoes oculto">
+        <div class="caixa-opcoes">
+            <p class="titulo-horario" id="texto-horario">Horário: 00:00</p>
+            <div class="botoes-opcoes">
+                <button id="btnAgendar" class="botao-verde">Agendar</button>
+                <button id="btnBloquear" class="botao-vermelho">Bloquear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Bloqueio/Desbloqueio -->
+    <div id="modal-bloqueio" class="modal-fundo">
+        <div class="modal-caixa">
+            <h2 id="titulo-bloqueio">Bloquear horário</h2>
+
+
+
+            <div class="botoes-modal">
+                <button id="btnCancelarBloqueio" class="btn-transparente">Cancelar</button>
+                <button id="btnConfirmarBloqueio" class="btn-verde">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Agendar -->
+    <div id="modal-agendar" class="modal-fundo">
+        <div class="modal-caixa">
+            <h2 id="titulo-agendar">Horário: 08:00</h2>
+            <input type="text" id="input-nome-cliente" placeholder="Nome do cliente">
+
+            <div id="lista-servicos" class="checkbox-container"></div>
+
+            <div class="botoes-modal">
+                <button id="btnCancelarAgendar" class="btn-transparente">Cancelar</button>
+                <button id="btnConfirmarAgendar" class="btn-verde">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
 
 
 

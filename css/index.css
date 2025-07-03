@@ -104,7 +104,7 @@ header h1 {
 /* ===== DATA (como no PDV) ===== */
 .data {
     background-color: #f3f3f3;
-    font-size: 20px;
+    font-size: 24px;
     text-align: center;
     padding: 10px;
     font-weight: bold;
@@ -287,3 +287,195 @@ header h1 {
 .calendario-corpo div:hover {
     background-color: yellow;
 }
+
+
+.modal-opcoes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-opcoes.ativo {
+    display: flex;
+}
+
+.caixa-opcoes {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    width: 80%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.titulo-horario {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.botoes-opcoes {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.botao-verde {
+    background-color: #00b050;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    flex: 1;
+}
+
+.botao-vermelho {
+    background-color: #e60000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    flex: 1;
+}
+
+/* Modal de bloqueio/desbloqueio */
+#modal-bloqueio {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#modal-bloqueio.ativo {
+    display: flex;
+}
+
+#modal-bloqueio .modal-caixa {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 320px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#modal-bloqueio .modal-caixa h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#modal-bloqueio .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+    font-size: 16px;
+}
+
+#modal-bloqueio .botoes-modal {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.botoes-modal {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+.btn-verde {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+
+}
+
+.btn-transparente {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #999;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+
+
+#modal-agendar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#modal-agendar.ativo {
+    display: flex;
+}
+
+.modal-caixa {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 320px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;  
+}
+
+.checkbox-container label {
+    flex: 1 1 45%;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+#input-nome-cliente {
+    width: 100%;
+    flex-wrap:  wrap;
+    font-size: 16px;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px; 
+}
+
