@@ -88,11 +88,13 @@ window.onload = () => {
                     modalOpcoes.classList.add("ativo")
 
                 } else if (item.status === "bloqueado") {
-
                     tituloBloqueio.textContent = "Desbloquear Horário";
-
                     horarioSelecionado = item.hora;
                     modalBloqueio.classList.add("ativo");
+
+                } else if (item.status === "agendado") {
+                    abrirModalAgendamento(item);
+
 
                 }
             });
@@ -216,7 +218,7 @@ window.onload = () => {
     // Ao clicar em "Bloquear" no modal-opcoes
     document.getElementById("btnBloquear").addEventListener("click", () => {
         modalOpcoes.classList.remove("ativo");
-        tituloBloqueio.textContent = "Bloquear horário";
+        tituloBloqueio.textContent = "Bloquear horário?";
         modalBloqueio.classList.add("ativo");
     });
 
@@ -318,10 +320,90 @@ window.onload = () => {
         modalAgendar.classList.remove("ativo");
         renderizarHorarios();
     });
+    
 
 
 
 
+    /* MODAL DE AGENDADO (QUANDO CLICA EM UM HOARIO AGENDADO) (REALIZAR / EDITAR / CANCELAR*/
+
+
+    function abrirModalAgendamento(item) {
+        // Referências ao modal e seus elementos internos
+        
+        const modalAgendamento = document.getElementById("modal-agendamento");
+        const tituloAgendamento = document.getElementById("titulo-agendamento");
+        const descricao = document.getElementById("descricao-agendamento");
+        const btnRealizado = document.getElementById("btnRealizado");
+        const btnCancelarAgendamento = document.getElementById("btnCancelarAgendamento");
+
+        // Dados do agendamento
+        const nomeCliente = item.cliente || "-";
+        const servicos = item.servico || ""; // já é string formatada
+
+        // Atualiza o conteúdo do modal
+        tituloAgendamento.textContent = `Horário: ${item.hora}`;
+        descricao.textContent = `${nomeCliente}${servicos ? ": " + servicos : ""}`;
+
+        // Exibe o modal
+        modalAgendamento.classList.add("ativo");
+
+        // Fecha o modal ao clicar fora da caixa
+        modalAgendamento.addEventListener("click", function (e) {
+            if (e.target === modalAgendamento) {
+                modalAgendamento.classList.remove("ativo");
+            }
+        });
+        // Evento: Cancelar agendamento 
+        btnCancelarAgendamento.onclick = function () {
+            modalAgendamento.classList.remove("ativo");
+            abrirModalCancelar(item); 
+        };
+        // Evento: Realizar serviço
+        btnRealizado.onclick = function () {
+            modalAgendamento.classList.remove("ativo");
+            abrirModalRealizado(item); // já implementado por você
+        };
+
+    }
+    function abrirModalCancelar(item) {
+        console.log("OK", item);
+        const modalCancelar = document.getElementById("modal-cancelar");
+        const btnVoltarCancelar = document.getElementById("btnVoltarCancelar");
+        const btnConfirmarCancelar = document.getElementById("btnConfirmarCancelar");
+
+        modalCancelar.classList.add("ativo");
+
+        // Fecha ao clicar fora do fundo
+        modalCancelar.addEventListener("click", (e) => {
+            if (e.target === modalCancelar) {
+                modalCancelar.classList.remove("ativo");
+            }
+        });
+
+        // Botão Voltar
+        btnVoltarCancelar.onclick = () => {
+            modalCancelar.classList.remove("ativo");
+        };
+
+        // Botão Confirmar → remove o agendamento
+        btnConfirmarCancelar.onclick = () => {
+            const chave = getChaveData(dataAtual);
+            const horarios = carregarHorarios(chave);
+
+            const index = horarios.findIndex(h => h.hora === item.hora);
+            if (index !== -1) {
+                horarios[index].status = "livre";
+                delete horarios[index].cliente;
+                delete horarios[index].servico;
+                delete horarios[index].valor;
+            }
+
+            salvarHorarios(chave, horarios);
+            modalCancelar.classList.remove("ativo");
+            renderizarHorarios();
+        };
+    }
 
 }
 
