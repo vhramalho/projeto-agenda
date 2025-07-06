@@ -407,7 +407,7 @@ header h1 {
 
 .btn-verde {
     background-color: #2ecc71;
-    
+
     color: white;
     padding: 10px 18px;
     border: none;
@@ -589,6 +589,66 @@ header h1 {
     text-align: center;
 }
 
+#modal-realizado {
+    position: fixed;
+    font-size: 15px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    /* Inicialmente oculto */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#modal-realizado.ativo {
+    display: flex;
+}
+
+
+#modal-realizado .modal-caixa {
+    width: 90%;
+    max-width: 300px;
+}
+
+#modal-realizado h2 {
+    margin-bottom: 10px;
+}
+
+#modal-realizado #info-realizado {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
 
 
 
+.grupo-radio {
+    margin-bottom: 15px;
+}
+
+
+
+.grupo-checkbox {
+    margin-left: 30px;
+    margin-bottom: 15px;
+    margin-right: 30px;
+}
+
+
+
+/* Cada linha com: [checkbox] [label] ................. [input] */
+.linha-pagamento {
+    display: flex;
+    margin-top: 5px;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+/* Input de valor à direita */
+.valor-forma-pagamento {
+    width: 100%;
+    text-align: right;
+}

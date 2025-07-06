@@ -117,7 +117,7 @@
                 <div style="display: flex; justify-content: space-between; gap: 10px;">
                     <button id="btnRealizado" class="botao-verde" style="flex: 1;">Realizado</button>
                     <button id="btnCancelarAgendamento" class="botao-vermelho" style="flex: 1;">Cancelar</button>
-                    
+
                 </div>
             </div>
         </div>
@@ -136,17 +136,48 @@
         </div>
     </div>
 
-    <!-- Modal de Agendar -->
-    <div id="modal-agendar" class="modal-fundo">
+    
+    <!--Modal de REALIZADO-->
+    <div id="modal-realizado" class="modal-fundo">
         <div class="modal-caixa">
-            <h2 id="titulo-agendar">Horário: 08:00</h2>
-            <input type="text" id="input-nome-cliente" placeholder="Nome do cliente">
+            <h2 id="titulo-realizado">Finalizar Serviço</h2>
 
-            <div id="lista-servicos" class="checkbox-container"></div>
+            <p id="info-realizado"></p>
 
-            <div class="botoes-modal">
-                <button id="btnCancelarAgendar" class="btn-transparente">Cancelar</button>
-                <button id="btnConfirmarAgendar" class="btn-verde">Confirmar</button>
+
+            <div class="grupo-radio">
+                <span>Foi pago?</span>
+                <label><input type="radio" name="pago" value="sim"> Sim</label>
+                <label><input type="radio" name="pago" value="nao"> Não</label>
+            </div>
+
+
+
+
+
+
+            
+
+
+            <div id="grupoFormaPagamento" class="grupo-checkbox" style="display: none;">
+                <span>Forma de pagamento:</span>
+                <div id="listaFormasPagamento"></div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="botoes">
+                <button id="btnVoltarRealizado" class="btn-transparente">Voltar</button>
+                <button id="btnConfirmarRealizado" class="btn-verde">Confirmar</button>
             </div>
         </div>
     </div>
