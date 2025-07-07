@@ -1,8 +1,18 @@
 let dataAtual = obterDataDoSistema();
+// Referências do calendário
+const btnCalendario = document.getElementById("btnCalendario");
+const modalCalendario = document.getElementById("modal-calendario");
+const mesAtualSpan = document.getElementById("mesAtual");
+const calendarioCorpo = document.getElementById("calendarioCorpo");
+const btnMesAnterior = document.getElementById("mesAnterior");
+const btnMesSeguinte = document.getElementById("mesSeguinte");
+
+let mesAtual = new Date(dataAtual).getMonth();
+let anoAtual = new Date(dataAtual).getFullYear();
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    
+
     const agendamentos = carregarTodosAgendamentosRealizados();
     const servicosCadastrados = JSON.parse(localStorage.getItem("servicos")) || [];
     const formasCadastradas = JSON.parse(localStorage.getItem("formasPagamento")) || [];
@@ -10,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     preencherRelatorio("dia", filtrarPorDia(agendamentos, dataAtual), formatarData(dataAtual), servicosCadastrados, formasCadastradas);
     preencherRelatorio("semana", filtrarPorSemana(agendamentos, dataAtual), "Semana " + getNumeroSemana(dataAtual), servicosCadastrados, formasCadastradas);
     preencherRelatorio("mes", filtrarPorMes(agendamentos, dataAtual), formatarMes(dataAtual), servicosCadastrados, formasCadastradas);
-    preencherRelatorio("ano", filtrarPorAno(agendamentos, dataAtual), "Ano " + dataAtual.slice(0, 4), servicosCadastrados, formasCadastradas);
+    preencherRelatorio("ano", filtrarPorAno(agendamentos, dataAtual), dataAtual.slice(0, 4), servicosCadastrados, formasCadastradas);
 });
 
 // 1. Data do sistema em formato YYYY-MM-DD
@@ -173,5 +183,87 @@ function getNumeroSemana(dataStr) {
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+// Abrir e fechar o modal de calendário
+btnCalendario.addEventListener("click", () => {
+    modalCalendario.style.display = "flex";
+});
+
+modalCalendario.addEventListener("click", (e) => {
+    if (e.target === modalCalendario) {
+        modalCalendario.style.display = "none";
+    }
+});
+
+// Gera o calendário completo
+function gerarCalendario(dataBase = new Date()) {
+    calendarioCorpo.innerHTML = "";
+
+    const data = new Date(anoAtual, mesAtual);
+    const primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
+    const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
+
+    const nomesMeses = [
+        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+    ];
+
+    mesAtualSpan.textContent = `${capitalize(nomesMeses[mesAtual])} ${anoAtual}`;
+
+    for (let i = 0; i < primeiroDia; i++) {
+        const vazio = document.createElement("div");
+        calendarioCorpo.appendChild(vazio);
+    }
+
+    for (let dia = 1; dia <= diasNoMes; dia++) {
+        const divDia = document.createElement("div");
+        divDia.textContent = dia.toString().padStart(2, "0");
+
+        divDia.addEventListener("click", () => {
+            const dataSelecionada = new Date(anoAtual, mesAtual, dia);
+            const ano = dataSelecionada.getFullYear();
+            const mes = String(dataSelecionada.getMonth() + 1).padStart(2, "0");
+            const diaStr = String(dataSelecionada.getDate()).padStart(2, "0");
+
+            dataAtual = `${ano}-${mes}-${diaStr}`;
+            modalCalendario.style.display = "none";
+
+            const ags = carregarTodosAgendamentosRealizados();
+            const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            const formas = JSON.parse(localStorage.getItem("formasPagamento")) || [];
+
+            preencherRelatorio("dia", filtrarPorDia(ags, dataAtual), formatarData(dataAtual), servicos, formas);
+            preencherRelatorio("semana", filtrarPorSemana(ags, dataAtual), "Semana " + getNumeroSemana(dataAtual), servicos, formas);
+            preencherRelatorio("mes", filtrarPorMes(ags, dataAtual), formatarMes(dataAtual), servicos, formas);
+            preencherRelatorio("ano", filtrarPorAno(ags, dataAtual), dataAtual.slice(0, 4), servicos, formas);
+        });
+
+        calendarioCorpo.appendChild(divDia);
+    }
+}
+
+// Botões de navegação de mês
+btnMesAnterior.addEventListener("click", () => {
+    mesAtual--;
+    if (mesAtual < 0) {
+        mesAtual = 11;
+        anoAtual--;
+    }
+    gerarCalendario();
+});
+
+btnMesSeguinte.addEventListener("click", () => {
+    mesAtual++;
+    if (mesAtual > 11) {
+        mesAtual = 0;
+        anoAtual++;
+    }
+    gerarCalendario();
+});
+
+// Gera calendário ao carregar
+document.addEventListener("DOMContentLoaded", () => {
+    gerarCalendario();
+});
 
 

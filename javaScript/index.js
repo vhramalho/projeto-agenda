@@ -21,14 +21,26 @@ window.onload = () => {
 
     // 🧠 Funções auxiliares
     function formatarDataTitulo(data) {
+        const diasSemana = [
+            "domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"
+        ];
+
         const meses = [
             "janeiro", "fevereiro", "março", "abril", "maio", "junho",
             "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
         ];
+
+        const diaSemana = diasSemana[data.getDay()];
         const dia = data.getDate();
         const mes = meses[data.getMonth()];
-        return `${dia} de ${mes}`;
+
+        return `${capitalize(diaSemana)} <br> ${dia} de ${mes}`;
     }
+
+    function capitalize(texto) {
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+
 
     function getChaveData(data) {
         const ano = data.getFullYear();
@@ -118,7 +130,7 @@ ${item.status === "realizado"
             listaHorarios.appendChild(li);
         });
 
-        dataAgenda.textContent = formatarDataTitulo(dataAtual);
+        dataAgenda.innerHTML = formatarDataTitulo(dataAtual);
     }
 
     // 📅 Botões para mudar o dia
