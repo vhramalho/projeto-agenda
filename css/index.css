@@ -29,15 +29,14 @@ header h1 {
     flex: 1;
     text-align: center;
     color: yellow;
-    margin-left: -24px;
-    /* compensar botão do menu */
+    
 }
 
 .botao-menu {
     background: none;
     border: none;
     color: #ffff00;
-    font-size: 24px;
+    font-size: 30px;
     cursor: pointer;
     z-index: 1001;
     position: relative;
@@ -53,8 +52,8 @@ header h1 {
 }
 
 .botao-whatsapp img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
 }
 
 /* ===== MENU LATERAL (oculto por padrão) ===== */
@@ -101,6 +100,9 @@ header h1 {
 }
 
 
+
+
+
 /* ===== DATA (como no PDV) ===== */
 .data {
     background-color: #f3f3f3;
@@ -116,6 +118,7 @@ header h1 {
     padding: 12px;
     overflow-y: auto;
     height: calc(100vh - 140px);
+    
     /* cabeçalho + data + espaço dos botões */
 }
 
@@ -124,10 +127,11 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    
 }
 
 .agenda li {
-    background-color: white;
+    
     padding: 12px;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -136,23 +140,21 @@ header h1 {
     align-items: center;
     font-size: 15px;
     border-left: 6px solid transparent;
+    
 }
+
+
+
 
 /* Cores de status */
-.livre {
-    border-left-color: transparent;
-}
+/* Livre / Agendado = padrão branco, não precisa declarar */
 
 .bloqueado {
-    border-left-color: red;
-}
-
-.agendado {
-    border-left-color: blue;
+background-color: #ffe5e5; /* vermelho clarinho */
 }
 
 .realizado {
-    border-left-color: green;
+background-color: #ddfcdd; /* verde mais escuro */
 }
 
 /* ===== BOTÕES FLUTUANTES (⬅️ e ➡️) ===== */
@@ -191,7 +193,6 @@ header h1 {
 .botoes-topo-agenda {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px 16px;
     position: relative;
 }
@@ -591,7 +592,7 @@ header h1 {
 
 #modal-realizado {
     position: fixed;
-    font-size: 15px;
+    font-size: 18px;
     top: 0;
     left: 0;
     right: 0;
@@ -652,3 +653,55 @@ header h1 {
     width: 100%;
     text-align: right;
 }
+
+
+#modal-agendamento-realizado {
+    position: fixed;
+    font-size: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#modal-agendamento-realizado.ativo {
+    display: flex;
+}
+
+#modal-agendamento-realizado .modal-caixa {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+}
+
+#modal-agendamento-realizado p {
+    margin-bottom: 10px;
+}
+
+
+#modal-confirmar-exclusao {
+    position: fixed;
+    font-size: 15px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#modal-confirmar-exclusao.ativo {
+    display: flex;
+}
+

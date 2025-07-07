@@ -69,12 +69,19 @@ window.onload = () => {
             li.className = item.status;
             li.innerHTML = `
 <span class="hora">${item.hora}</span>
-<span class="descricao">${item.status === "bloqueado"
+<span class="descricao">
+${item.status === "bloqueado"
                     ? "Bloqueado"
                     : item.status === "agendado" || item.status === "realizado"
                         ? `${item.cliente || ""} - ${item.servico || ""}`
-                        : ""
-                }</span>
+                        : ""}
+${item.status === "realizado"
+                    ? item.pago
+                        ? " ✅"
+                        : " ⚠️"
+                    : ""}
+</span>
+
 <span class="valor">${item.status === "realizado" && item.valor ? "R$" + item.valor : ""
                 }</span>
 `;
@@ -94,6 +101,9 @@ window.onload = () => {
 
                 } else if (item.status === "agendado") {
                     abrirModalAgendamento(item);
+
+                } else if (item.status === "realizado") {
+                    abrirModalAgendamentoRealizado(item);
 
 
                 }
@@ -135,7 +145,7 @@ window.onload = () => {
             hoje.getMonth() === dataAtual.getMonth() &&
             hoje.getDate() === dataAtual.getDate();
 
-        btnVoltarHoje.style.display = mesmaData ? "none" : "flex";
+        btnVoltarHoje.style.display = mesmaData ? "flex" : "flex";
     }
 
     btnVoltarHoje.addEventListener("click", () => {
@@ -457,18 +467,17 @@ window.onload = () => {
 
         // Preenche os dados
         const servicosTexto = Array.isArray(item.servico)
-? item.servico.map(s => s.nome).join(" + ")
-: (typeof item.servico === "string" ? item.servico : "-");
+            ? item.servico.map(s => s.nome).join(" + ")
+            : (typeof item.servico === "string" ? item.servico : "-");
 
         campoInfo.innerHTML = `Horário: ${item.hora}<br>Nome: ${item.cliente || "-"}<br>Serviços: ${servicosTexto}`;
 
-        // Oculta campo de forma de pagamento até escolher "Sim"
+        // Resetar radios
+        radiosPago.forEach(radio => radio.checked = false);
         formaPagamento.style.display = "none";
 
-        // Define comportamento dos botões de "Foi pago?"
+        // ✅ Adiciona o comportamento real ao marcar "Sim" ou "Não"
         radiosPago.forEach(radio => {
-            radio.checked = false;
-
             radio.onchange = () => {
                 if (radio.value === "sim") {
                     formaPagamento.style.display = "block";
@@ -478,6 +487,34 @@ window.onload = () => {
                 }
             };
         });
+
+        // Se já foi pago antes, marcar e preencher
+        if ("pago" in item) {
+            const radioSim = document.querySelector('input[name="pago"][value="sim"]');
+            const radioNao = document.querySelector('input[name="pago"][value="nao"]');
+
+            if (item.pago) {
+                radioSim.checked = true;
+                formaPagamento.style.display = "block";
+                preencherFormasPagamento();
+
+                setTimeout(() => {
+                    const checkboxes = document.querySelectorAll('#listaFormasPagamento input[type="checkbox"]');
+                    item.formaPagamento?.forEach(fp => {
+                        checkboxes.forEach(checkbox => {
+                            if (checkbox.value === fp.forma) {
+                                checkbox.checked = true;
+                                const inputValor = checkbox.parentElement.querySelector(".valor-forma-pagamento");
+                                inputValor.style.display = "inline-block";
+                                inputValor.value = fp.valor;
+                            }
+                        });
+                    });
+                }, 100);
+            } else {
+                radioNao.checked = true;
+            }
+        }
 
         // Abre o modal
         modal.classList.add("ativo");
@@ -506,41 +543,110 @@ window.onload = () => {
             const horarios = carregarHorarios(chave);
             const index = horarios.findIndex(h => h.hora === item.hora);
 
-            if (pago.value === "sim") {
-                const formasSelecionadas = [];
-                const checkboxes = document.querySelectorAll('#listaFormasPagamento input[type="checkbox"]:checked');
+            if (index !== -1) {
+                horarios[index].status = "realizado";
+                horarios[index].pago = (pago.value === "sim");
 
-                checkboxes.forEach(checkbox => {
-                    const divPai = checkbox.parentElement;
-                    const inputValor = divPai.querySelector(".valor-forma-pagamento");
-                    const valorForma = inputValor.value.trim();
+                if (pago.value === "sim") {
+                    const formasSelecionadas = [];
+                    const checkboxes = document.querySelectorAll('#listaFormasPagamento input[type="checkbox"]:checked');
 
-                    if (valorForma) {
-                        formasSelecionadas.push({
-                            forma: checkbox.value,
-                            valor: parseFloat(valorForma)
-                        });
+                    checkboxes.forEach(checkbox => {
+                        const divPai = checkbox.parentElement;
+                        const inputValor = divPai.querySelector(".valor-forma-pagamento");
+                        const valorForma = inputValor.value.trim();
+
+                        if (valorForma) {
+                            formasSelecionadas.push({
+                                forma: checkbox.value,
+                                valor: parseFloat(valorForma)
+                            });
+                        }
+                    });
+
+                    if (formasSelecionadas.length === 0) {
+                        alert("Informe ao menos um valor para a forma de pagamento.");
+                        return;
                     }
-                });
 
-                if (formasSelecionadas.length === 0) {
-                    alert("Informe ao menos um valor para a forma de pagamento.");
-                    return;
-                }
-
-                if (index !== -1) {
-                    horarios[index].status = "realizado";
                     horarios[index].valor = formasSelecionadas.reduce((soma, f) => soma + f.valor, 0);
                     horarios[index].formaPagamento = formasSelecionadas;
+                } else {
+                    delete horarios[index].valor;
+                    delete horarios[index].formaPagamento;
                 }
-
-                salvarHorarios(chave, horarios);
             }
 
+            salvarHorarios(chave, horarios);
             modal.classList.remove("ativo");
             renderizarHorarios();
         };
     }
+
+    // Abrir modal de Editar ou Excluir agendamento realizado
+    function abrirModalAgendamentoRealizado(item) {
+        document.getElementById("hr-realizado").textContent = item.hora || "-";
+        document.getElementById("nome-realizado").textContent = item.cliente || "-";
+        document.getElementById("servico-realizado").textContent = item.servico || "-";
+        document.getElementById("valor-realizado").textContent = item.valor || "-";
+
+        // Salva o item atual para ações futuras
+        window.itemRealizadoSelecionado = item;
+
+        document.getElementById("modal-agendamento-realizado").classList.add("ativo");
+    }
+
+    //Fecha o modal ao clicar fora da caixa
+    document.getElementById("modal-agendamento-realizado").addEventListener("click", function (e) {
+        if (e.target === this) {
+            this.classList.remove("ativo");
+        }
+    });
+
+
+    function editarRealizado() {
+        document.getElementById("modal-agendamento-realizado").classList.remove("ativo");
+        abrirModalAgendamentoRealizado(window.itemRealizadoSelecionado);
+    }
+
+    function excluirRealizado() {
+        // Fecha o modal de informações e abre o modal de confirmação
+        document.getElementById("modal-agendamento-realizado").classList.remove("ativo");
+        document.getElementById("modal-confirmar-exclusao").classList.add("ativo");
+    }
+
+    function fecharModalExclusaoRealizado() {
+        document.getElementById("modal-confirmar-exclusao").classList.remove("ativo");
+    }
+
+    function confirmarExclusaoRealizado() {
+        const item = window.itemRealizadoSelecionado;
+        const chave = getChaveData(dataAtual);
+        const horarios = carregarHorarios(chave);
+
+        const index = horarios.findIndex(h => h.hora === item.hora);
+        if (index !== -1) {
+            horarios[index].status = "livre";
+            delete horarios[index].cliente;
+            delete horarios[index].servico;
+            delete horarios[index].valor;
+            delete horarios[index].formaPagamento;
+            delete horarios[index].pago;
+        }
+
+        salvarHorarios(chave, horarios);
+        document.getElementById("modal-confirmar-exclusao").classList.remove("ativo");
+        renderizarHorarios();
+    }
+
+    window.editarRealizado = function () {
+        document.getElementById("modal-agendamento-realizado").classList.remove("ativo");
+        abrirModalRealizado(window.itemRealizadoSelecionado);
+    }
+    window.excluirRealizado = excluirRealizado;
+    window.fecharModalExclusaoRealizado = fecharModalExclusaoRealizado;
+    window.confirmarExclusaoRealizado = confirmarExclusaoRealizado;
+
 
 }
 

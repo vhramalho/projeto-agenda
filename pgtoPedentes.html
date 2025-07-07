@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagamentos Pendentes</title>
+    <link rel="stylesheet" href="css/servicos.css" />
+
+    <style>
+        .cartao-pagamento {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .cartao-pagamento:hover {
+            background-color: #f0f0f0;
+        }
+
+        .cartao-pagamento span {
+            margin: 0 6px;
+            white-space: nowrap;
+        }
+
+        .cartao-pagamento .data {
+            min-width: 60px;
+            font-weight: bold;
+        }
+
+        .cartao-pagamento .cliente {
+            flex: 1;
+            text-align: left;
+        }
+
+        .cartao-pagamento .servicos {
+            flex: 2;
+            text-align: center;
+        }
+
+        .cartao-pagamento .valor {
+            min-width: 80px;
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Pagamentos Pendentes</h1>
+    </header>
+
+    <a class="voltar" href="index.html">← Voltar</a>
+
+    <main>
+        <h2>Clientes com Pagamento Pendente</h2>
+        <div id="lista-pendentes">
+            <!-- Lista será preenchida via JavaScript -->
+        </div>
+    </main>
+
+    <script src="javaScript/pgtoPendentes.js"></script>
+    <script src="javaScript/menu.js"></script>
+
+</body>
+
+</html>

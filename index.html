@@ -111,9 +111,6 @@
             </p>
 
             <div class="botoes-modal" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                <!--BOTÃO DE EDITAR FUTURAMENTE 
-                <button id="btnEditar" class="btn-cinza">Editar</button>
-                -->
                 <div style="display: flex; justify-content: space-between; gap: 10px;">
                     <button id="btnRealizado" class="botao-verde" style="flex: 1;">Realizado</button>
                     <button id="btnCancelarAgendamento" class="botao-vermelho" style="flex: 1;">Cancelar</button>
@@ -136,7 +133,7 @@
         </div>
     </div>
 
-    
+
     <!--Modal de REALIZADO-->
     <div id="modal-realizado" class="modal-fundo">
         <div class="modal-caixa">
@@ -151,33 +148,43 @@
                 <label><input type="radio" name="pago" value="nao"> Não</label>
             </div>
 
-
-
-
-
-
-            
-
-
             <div id="grupoFormaPagamento" class="grupo-checkbox" style="display: none;">
                 <span>Forma de pagamento:</span>
                 <div id="listaFormasPagamento"></div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
             <div class="botoes">
                 <button id="btnVoltarRealizado" class="btn-transparente">Voltar</button>
                 <button id="btnConfirmarRealizado" class="btn-verde">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: Agendamento Realizado -->
+    <div id="modal-agendamento-realizado" class="modal-fundo">
+        <div class="modal-caixa">
+            <h2>Agendamento Realizado</h2>
+            <p><strong>Horário:</strong> <span id="hr-realizado"></span></p>
+            <p><strong>Cliente:</strong> <span id="nome-realizado"></span></p>
+            <p><strong>Serviço:</strong> <span id="servico-realizado"></span></p>
+            <p><strong>Valor:</strong> R$ <span id="valor-realizado"></span></p>
+
+            <div class="botoes">
+                <button class="botao-verde" onclick="editarRealizado()">Editar</button>
+                <button class="botao-vermelho" onclick="excluirRealizado()">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal: Confirmar Exclusão de Agendamento Realizado -->
+    <div id="modal-confirmar-exclusao" class="modal-fundo">
+        <div class="modal-caixa">
+            <h2>Deseja realmente excluir esse agendamento?</h2>
+            <div class="botao">
+                <button class="btn-transparente" style="border: none;"  onclick="fecharModalExclusaoRealizado()">Cancelar</button>
+                <button class="btn-verde" onclick="confirmarExclusaoRealizado()">Confirmar</button>
             </div>
         </div>
     </div>
