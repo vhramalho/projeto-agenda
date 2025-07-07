@@ -204,11 +204,35 @@
         </div>
     </div>
 
+    <div id="resumoDia">
+        <div class="info">
+            <span>Atendimentos:</span>
+            <strong id="qtdAtendimentos">0</strong>
+        </div>
+        <div class="info">
+            <span>Valor total:</span>
+            <strong id="valorTotalDia">R$ 0,00</strong>
+        </div>
+    </div>
+    <!-- Modal WhatsApp -->
+    <div id="modalWhatsapp" class="modal-overlay" style="display: none;">
+        <div class="modal-caixa">
+            <h2 class="modal-titulo" id="tituloSemana"></h2>
+            <p class="selecioneDias" >(selecione os dias)</p>
+            <div class="semana-dias" id="diasSemanaWhatsapp">
+                <!-- Dias da semana serão inseridos via JS -->
+            </div>
+            <div class="botoes">
+                <button class="btn-transparente" onclick="fecharModalWhatsapp()">Cancelar</button>
+                <button class="btn-verde" onclick="encaminharWhatsapp()">Encaminhar para WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</body>
 
 
-
-    <script src="javaScript/index.js"></script>
-    <script src="javaScript/menu.js"></script>
+<script src="javaScript/index.js"></script>
+<script src="javaScript/menu.js"></script>
 </body>
 
 </html>

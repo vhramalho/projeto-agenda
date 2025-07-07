@@ -131,6 +131,21 @@ ${item.status === "realizado"
         });
 
         dataAgenda.innerHTML = formatarDataTitulo(dataAtual);
+        atualizarResumoDia();
+    }
+
+    function atualizarResumoDia() {
+        const chave = getChaveData(dataAtual);
+        const horarios = carregarHorarios(chave);
+
+        const realizados = horarios.filter(h => h.status === "realizado");
+        const totalValor = realizados.reduce((soma, h) => soma + (h.valor || 0), 0);
+
+        document.getElementById("qtdAtendimentos").textContent = realizados.length;
+        document.getElementById("valorTotalDia").textContent = totalValor.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
     }
 
     // 📅 Botões para mudar o dia
@@ -676,6 +691,82 @@ ${item.status === "realizado"
     window.fecharModalExclusaoRealizado = fecharModalExclusaoRealizado;
     window.confirmarExclusaoRealizado = confirmarExclusaoRealizado;
 
+    function obterDataDoSistema() {
+        return localStorage.getItem("dataAtual") || new Date().toLocaleDateString("pt-br");
+    }
+    //ABRIR MODAL DO WHATSAPP
+    function abrirModalWhatsapp() {
+        const dataBase = obterDataDoSistema(); // Ex: "09/07/2025"
+        const dataObj = converterParaData(dataBase);
+        const diaSemana = dataObj.getDay(); // 0 = domingo
+        const domingo = new Date(dataObj);
+        domingo.setDate(dataObj.getDate() - diaSemana);
+
+        const dias = [];
+        for (let i = 0; i < 7; i++) {
+            const dia = new Date(domingo);
+            dia.setDate(domingo.getDate() + i);
+            dias.push(dia);
+        }
+
+        const container = document.getElementById("diasSemanaWhatsapp");
+        container.innerHTML = "";
+
+        dias.forEach((dia) => {
+            const nomeDia = dia.toLocaleDateString("pt-BR", { weekday: "short" });
+            const dataTexto = dia.toLocaleDateString("pt-BR", {day: "2-digit"});
+
+            const div = document.createElement("div");
+            div.classList.add("dia-caixa");
+            div.dataset.data = dataTexto;
+
+            const spanDia = document.createElement("span");
+            spanDia.textContent = nomeDia;
+
+            const spanData = document.createElement("div");
+            spanData.textContent = dataTexto;
+
+            div.appendChild(spanDia); // Nome do dia (seg, ter...)
+            div.appendChild(spanData); // Data real (07/07/2025)
+
+            if (dataTexto === dataBase) {
+                div.classList.add("selecionado");
+            }
+
+            div.addEventListener("click", () => {
+                div.classList.toggle("selecionado");
+            });
+
+            container.appendChild(div);
+        });
+
+        const dia = dataObj.getDate().toString().padStart(2, "0");
+        const nomeMes = dataObj.toLocaleDateString("pt-BR", {month: "long"});
+        document.getElementById("tituloSemana").textContent = `Semana do dia ${dia} de ${nomeMes}`;
+        document.getElementById("modalWhatsapp").style.display = "flex";
+    }
+    //BOTAO DE CANCELAR DO MODAL DE WHATSAPP
+    function fecharModalWhatsapp() {
+        document.getElementById("modalWhatsapp").style.display = "none";
+    }
+    window.fecharModalWhatsapp = fecharModalWhatsapp;
+    //FECHAR AO CLICAR FORA DO MODAL DE WHATSAPP
+    document.getElementById("modalWhatsapp").addEventListener("click", function (e) {
+        if (e.target.id === "modalWhatsapp") {
+            fecharModalWhatsapp();
+        }
+    });
+
+    function converterParaData(dataPtBr) {
+        const [dia, mes, ano] = dataPtBr.split("/").map(Number);
+        return new Date(ano, mes - 1, dia);
+    }
+
+    // 👇 Disponibiliza globalmente para menu.js acessar
+    window.abrirModalWhatsapp = abrirModalWhatsapp;
+
+
+    
 
 }
 

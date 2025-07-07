@@ -35,4 +35,11 @@ fetch("menu.html")
         } else {
             tituloElemento.textContent = "Agenda";
         }
+        const botaoWhatsapp = document.getElementById("botao-whatsapp");
+            if (botaoWhatsapp) {
+                botaoWhatsapp.addEventListener("click", abrirModalWhatsapp);
+            }
     });
+
+
+
