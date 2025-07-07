@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <span class="data">${dataFormatada}</span>
 <span class="cliente">${item.cliente || "Sem nome"}</span>
 <span class="servicos">${servicosTexto || "Não informado"}</span>
-<span class="valor">R$ ${valorTotal.toFixed(2)}</span>
+<span class="valor">R$ ${(item.valor || 0).toFixed(2)}</span>
 `;
 
                     card.addEventListener("click", () => {

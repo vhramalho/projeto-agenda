@@ -63,7 +63,7 @@
             <div class="calendario-corpo" id="calendarioCorpo">
                 <!-- Dias serão inseridos por JS -->
             </div>
-            
+
         </div>
     </div>
 
@@ -157,6 +157,10 @@
                 <label><input type="radio" name="pago" value="sim"> Sim</label>
                 <label><input type="radio" name="pago" value="nao"> Não</label>
             </div>
+            <div id="campoValorNaoPago" class="valorNaoPago">
+                <label for="inputValorNaoPago">Valor:</label>
+                <input type="number" id="inputValorNaoPago" placeholder="Digite o valor">
+            </div>
 
             <div id="grupoFormaPagamento" class="grupo-checkbox" style="display: none;">
                 <span>Forma de pagamento:</span>
@@ -193,7 +197,8 @@
         <div class="modal-caixa">
             <h2>Deseja realmente excluir esse agendamento?</h2>
             <div class="botao">
-                <button class="btn-transparente" style="border: none;"  onclick="fecharModalExclusaoRealizado()">Cancelar</button>
+                <button class="btn-transparente" style="border: none;"
+                    onclick="fecharModalExclusaoRealizado()">Cancelar</button>
                 <button class="btn-verde" onclick="confirmarExclusaoRealizado()">Confirmar</button>
             </div>
         </div>

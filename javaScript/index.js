@@ -476,31 +476,37 @@ ${item.status === "realizado"
         const formaPagamento = document.getElementById("grupoFormaPagamento");
         const btnVoltar = document.getElementById("btnVoltarRealizado");
         const btnConfirmar = document.getElementById("btnConfirmarRealizado");
+        const campoValorNaoPago = document.getElementById("campoValorNaoPago");
+        const inputValorNaoPago = document.getElementById("inputValorNaoPago");
 
-        // Preenche os dados
+        // Preenche os dados do serviço no modal
         const servicosTexto = Array.isArray(item.servico)
             ? item.servico.map(s => s.nome).join(" + ")
             : (typeof item.servico === "string" ? item.servico : "-");
 
         campoInfo.innerHTML = `Horário: ${item.hora}<br>Nome: ${item.cliente || "-"}<br>Serviços: ${servicosTexto}`;
 
-        // Resetar radios
+        // Resetar radios e esconder campos
         radiosPago.forEach(radio => radio.checked = false);
         formaPagamento.style.display = "none";
+        campoValorNaoPago.style.display = "none";
+        inputValorNaoPago.value = "";
 
-        // ✅ Adiciona o comportamento real ao marcar "Sim" ou "Não"
+        // Comportamento ao marcar "Sim" ou "Não"
         radiosPago.forEach(radio => {
             radio.onchange = () => {
                 if (radio.value === "sim") {
                     formaPagamento.style.display = "block";
+                    campoValorNaoPago.style.display = "none";
                     preencherFormasPagamento();
                 } else {
                     formaPagamento.style.display = "none";
+                    campoValorNaoPago.style.display = "block";
                 }
             };
         });
 
-        // Se já foi pago antes, marcar e preencher
+        // Se já foi pago antes, preencher campos
         if ("pago" in item) {
             const radioSim = document.querySelector('input[name="pago"][value="sim"]');
             const radioNao = document.querySelector('input[name="pago"][value="nao"]');
@@ -525,6 +531,8 @@ ${item.status === "realizado"
                 }, 100);
             } else {
                 radioNao.checked = true;
+                campoValorNaoPago.style.display = "block";
+                inputValorNaoPago.value = item.valor || "";
             }
         }
 
@@ -560,6 +568,7 @@ ${item.status === "realizado"
                 horarios[index].pago = (pago.value === "sim");
 
                 if (pago.value === "sim") {
+                    // Se foi pago, pegar formas de pagamento e valores
                     const formasSelecionadas = [];
                     const checkboxes = document.querySelectorAll('#listaFormasPagamento input[type="checkbox"]:checked');
 
@@ -583,8 +592,16 @@ ${item.status === "realizado"
 
                     horarios[index].valor = formasSelecionadas.reduce((soma, f) => soma + f.valor, 0);
                     horarios[index].formaPagamento = formasSelecionadas;
+
                 } else {
-                    delete horarios[index].valor;
+                    // Se não foi pago, salvar apenas o valor informado
+                    const valorInformado = parseFloat(inputValorNaoPago.value);
+                    if (!valorInformado || isNaN(valorInformado) || valorInformado <= 0) {
+                        alert("Informe o valor do serviço mesmo que não tenha sido pago.");
+                        return;
+                    }
+
+                    horarios[index].valor = valorInformado;
                     delete horarios[index].formaPagamento;
                 }
             }
