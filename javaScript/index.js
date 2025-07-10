@@ -81,12 +81,14 @@ window.onload = () => {
             li.className = item.status;
             li.innerHTML = `
 <span class="hora">${item.hora}</span>
-<span class="descricao">
-${item.status === "bloqueado"
+<span class="descricao">${item.status === "bloqueado"
                     ? "Bloqueado"
-                    : item.status === "agendado" || item.status === "realizado"
-                        ? `${item.cliente || ""} - ${item.servico || ""}`
-                        : ""}
+                    : item.status === " "
+                        ? "Encaixe"
+                        : item.status === "agendado" || item.status === "realizado"
+                            ? `${item.cliente || ""} - ${item.servico || ""}`
+                            : ""
+                }
 ${item.status === "realizado"
                     ? item.pago
                         ? " ✅"
@@ -101,7 +103,7 @@ ${item.status === "realizado"
             // 🔧 ADICIONADO – Clique no horário livre
             li.addEventListener("click", () => {
 
-                if (item.status === "livre") {
+                if (item.status === "livre" || item.status === "encaixe") {
                     textoHorario.textContent = `Horário: ${item.hora}`;
                     horarioSelecionado = item.hora;
                     modalOpcoes.classList.add("ativo")
@@ -281,7 +283,7 @@ ${item.status === "realizado"
         });
 
         salvarHorarios(chave, horarios);
-
+        aplicarLogicaEncaixe(getChaveData(dataAtual));
         modalBloqueio.classList.remove("ativo");
         renderizarHorarios();
     });
@@ -354,6 +356,7 @@ ${item.status === "realizado"
         });
 
         salvarHorarios(chave, horarios);
+        aplicarLogicaEncaixe(getChaveData(dataAtual));
         modalAgendar.classList.remove("ativo");
         renderizarHorarios();
     });
@@ -437,6 +440,7 @@ ${item.status === "realizado"
             }
 
             salvarHorarios(chave, horarios);
+            aplicarLogicaEncaixe(getChaveData(dataAtual));
             modalCancelar.classList.remove("ativo");
             renderizarHorarios();
         };
@@ -547,7 +551,7 @@ ${item.status === "realizado"
             } else {
                 radioNao.checked = true;
                 campoValorNaoPago.style.display = "block";
-                inputValorNaoPago.value = item.valor || "";
+                inputValorNaoPago.value = item.valor || " ";
             }
         }
 
@@ -622,6 +626,7 @@ ${item.status === "realizado"
             }
 
             salvarHorarios(chave, horarios);
+            aplicarLogicaEncaixe(getChaveData(dataAtual));
             modal.classList.remove("ativo");
             renderizarHorarios();
         };
@@ -679,6 +684,7 @@ ${item.status === "realizado"
         }
 
         salvarHorarios(chave, horarios);
+        aplicarLogicaEncaixe(getChaveData(dataAtual));
         document.getElementById("modal-confirmar-exclusao").classList.remove("ativo");
         renderizarHorarios();
     }
@@ -691,13 +697,51 @@ ${item.status === "realizado"
     window.fecharModalExclusaoRealizado = fecharModalExclusaoRealizado;
     window.confirmarExclusaoRealizado = confirmarExclusaoRealizado;
 
-    function obterDataDoSistema() {
-        return localStorage.getItem("dataAtual") || new Date().toLocaleDateString("pt-br");
+
+
+    function aplicarLogicaEncaixe(dataSelecionada) {
+        const chave = `agenda_${dataSelecionada}`;
+        const agenda = JSON.parse(localStorage.getItem(chave)) || [];
+
+        // 🔁 1. Zerar todos os encaixes (volta pra livre se não estiver ocupado)
+        for (let i = 0; i < agenda.length; i++) {
+            if (agenda[i].status === "encaixe") {
+                agenda[i].status = "livre";
+            }
+        }
+
+        // 🔁 2. Aplicar lógica do encaixe para frente
+        for (let i = 0; i < agenda.length - 1; i++) {
+            const atual = agenda[i];
+            const seguinte = agenda[i + 1];
+
+            const ocupado = ["agendado", "realizado"].includes(atual.status);
+            if (ocupado && seguinte.status === "livre") {
+                seguinte.status = "encaixe";
+            }
+        }
+
+        // 🔁 3. Aplicar lógica do encaixe para trás
+        for (let i = 1; i < agenda.length; i++) {
+            const atual = agenda[i];
+            const anterior = agenda[i - 1];
+
+            const ocupado = ["agendado", "realizado", "bloqueado"].includes(atual.status);
+            if (ocupado && anterior.status === "livre") {
+                anterior.status = "encaixe";
+            }
+        }
+
+        localStorage.setItem(chave, JSON.stringify(agenda));
     }
+
+
+
     //ABRIR MODAL DO WHATSAPP
     function abrirModalWhatsapp() {
-        const dataBase = obterDataDoSistema(); // Ex: "09/07/2025"
-        const dataObj = converterParaData(dataBase);
+        const chave = getChaveData(dataAtual);
+        const [ano, mes, diaNum] = chave.split("-");
+        const dataObj = new Date(ano, mes - 1, diaNum);
         const diaSemana = dataObj.getDay(); // 0 = domingo
         const domingo = new Date(dataObj);
         domingo.setDate(dataObj.getDate() - diaSemana);
@@ -714,11 +758,11 @@ ${item.status === "realizado"
 
         dias.forEach((dia) => {
             const nomeDia = dia.toLocaleDateString("pt-BR", { weekday: "short" });
-            const dataTexto = dia.toLocaleDateString("pt-BR", {day: "2-digit"});
+            const dataTexto = dia.toLocaleDateString("pt-BR", { day: "2-digit" });
 
             const div = document.createElement("div");
             div.classList.add("dia-caixa");
-            div.dataset.data = dataTexto;
+            div.dataset.data = dia.toLocaleDateString("pt-BR");
 
             const spanDia = document.createElement("span");
             spanDia.textContent = nomeDia;
@@ -729,9 +773,13 @@ ${item.status === "realizado"
             div.appendChild(spanDia); // Nome do dia (seg, ter...)
             div.appendChild(spanData); // Data real (07/07/2025)
 
-            if (dataTexto === dataBase) {
+            const hojeTexto = dataObj.toLocaleDateString("pt-BR");
+
+            if (div.dataset.data === hojeTexto) {
                 div.classList.add("selecionado");
+
             }
+
 
             div.addEventListener("click", () => {
                 div.classList.toggle("selecionado");
@@ -741,7 +789,7 @@ ${item.status === "realizado"
         });
 
         const dia = dataObj.getDate().toString().padStart(2, "0");
-        const nomeMes = dataObj.toLocaleDateString("pt-BR", {month: "long"});
+        const nomeMes = dataObj.toLocaleDateString("pt-BR", { month: "long" });
         document.getElementById("tituloSemana").textContent = `Semana do dia ${dia} de ${nomeMes}`;
         document.getElementById("modalWhatsapp").style.display = "flex";
     }
@@ -750,6 +798,7 @@ ${item.status === "realizado"
         document.getElementById("modalWhatsapp").style.display = "none";
     }
     window.fecharModalWhatsapp = fecharModalWhatsapp;
+
     //FECHAR AO CLICAR FORA DO MODAL DE WHATSAPP
     document.getElementById("modalWhatsapp").addEventListener("click", function (e) {
         if (e.target.id === "modalWhatsapp") {
@@ -766,8 +815,69 @@ ${item.status === "realizado"
     window.abrirModalWhatsapp = abrirModalWhatsapp;
 
 
-    
+    function encaminharParaWhatsApp() {
+        const selecionados = document.querySelectorAll(".dia-caixa.selecionado");
+        if (selecionados.length === 0) {
+            alert("Selecione pelo menos um dia.");
+            return;
+        }
 
+        const config = JSON.parse(localStorage.getItem("configWhatsApp")) || {};
+        const numero = config.numero?.replace(/\D/g, ""); // remove caracteres não numéricos
+
+        if (!numero) {
+            alert("Número do WhatsApp não configurado.");
+            return;
+        }
+
+        let mensagem = "Horários disponíveis:\n\n";
+
+        selecionados.forEach(div => {
+            const dataPtBr = div.dataset.data; // formato: dd/mm/yyyy
+            const [dia, mes, ano] = dataPtBr.split("/").map(str => str.padStart(2, "0"));
+            const dataISO = `${ano}-${mes}-${dia}`;
+            const dataObj = new Date(ano, mes - 1, dia);
+
+            // Nome do dia da semana
+            const nomeDia = dataObj.toLocaleDateString("pt-BR", { weekday: "long" });
+            mensagem += `${capitalize(nomeDia)} ${dia}/${mes}\n`;
+
+            const chave = `agenda_${dataISO}`;
+            const dados = JSON.parse(localStorage.getItem(chave));
+
+            let horarios = [];
+
+            if (dados) {
+                horarios = dados
+                    .filter(h => h.status === "livre")
+                    .map(h => h.hora);
+            } else {
+                // gerar horários padrão de hora em hora (08:00 até 20:00)
+                for (let h = 8; h <= 20; h++) {
+                    horarios.push(`${h.toString().padStart(2, "0")}:00`);
+                }
+            }
+
+            if (horarios.length === 0) {
+                mensagem += "(Sem horários disponíveis)\n\n";
+            } else {
+                mensagem += horarios.join("\n") + "\n\n";
+            }
+        });
+
+        const link = `https://wa.me/?text=${encodeURIComponent(mensagem.trim())}`;
+        window.open(link, "_blank");
+    }
+    document.getElementById("btnEncaminharParaWhatsApp").addEventListener("click", encaminharParaWhatsApp);
+
+    function capitalize(texto) {
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js")
+            .then(() => console.log("Service Worker registrado!"))
+            .catch(err => console.error("Erro no SW:", err));
+    }
 }
 
 

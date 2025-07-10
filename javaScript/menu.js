@@ -25,19 +25,32 @@ fetch("menu.html")
         const caminho = window.location.pathname;
 
         if (caminho.includes("index")) {
-            tituloElemento.textContent = "Agenda Victor";
+            tituloElemento.textContent = "Agenda";
         } else if (caminho.includes("servicos")) {
             tituloElemento.textContent = "Serviços";
+        }  else if (caminho.includes("pgtoPedentes")) {
+            tituloElemento.textContent = "Pagamentos Pendentes";
+        }else if (caminho.includes("config")) {
+            tituloElemento.textContent = "Configurações";
+        } else if (caminho.includes("relatorio")) {
+            tituloElemento.textContent = "Relatório";
+        } else if (caminho.includes("whatsapp")) {
+            tituloElemento.textContent = "WhatsApp";
         } else if (caminho.includes("pagamento")) {
             tituloElemento.textContent = "Forma de Pagamento";
-        } else if (caminho.includes("config")) {
-            tituloElemento.textContent = "Configurações";
-        } else {
+        }
+
+        else {
             tituloElemento.textContent = "Agenda";
         }
         const botaoWhatsapp = document.getElementById("botao-whatsapp");
             if (botaoWhatsapp) {
-                botaoWhatsapp.addEventListener("click", abrirModalWhatsapp);
+                const nomePagina = window.location.pathname.split("/").pop();
+                if (!nomePagina.includes("index")) {
+                    botaoWhatsapp.style.display = "none"
+                } else {
+                    botaoWhatsapp.addEventListener("click", abrirModalWhatsapp);
+                }
             }
     });
 

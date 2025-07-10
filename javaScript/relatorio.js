@@ -175,9 +175,14 @@ function formatarMes(data) {
 function getNumeroSemana(dataStr) {
     const [ano, mes, dia] = dataStr.split("-").map(Number);
     const data = new Date(ano, mes - 1, dia);
-    const primeiroDiaAno = new Date(data.getFullYear(), 0, 1);
-    const diff = (data - primeiroDiaAno + ((primeiroDiaAno.getDay() + 6) % 7) * 86400000) / 86400000;
-    return Math.ceil(diff / 7);
+
+    const primeiroDomingo = new Date(data.getFullYear(), 0, 1);
+    while (primeiroDomingo.getDay() !== 0) {
+        primeiroDomingo.setDate(primeiroDomingo.getDate() - 1);
+    }
+
+    const diffDias = Math.floor((data - primeiroDomingo) / 86400000);
+    return Math.floor(diffDias / 7) + 1;
 }
 
 function capitalize(str) {
@@ -236,6 +241,43 @@ function gerarCalendario(dataBase = new Date()) {
             preencherRelatorio("semana", filtrarPorSemana(ags, dataAtual), "Semana " + getNumeroSemana(dataAtual), servicos, formas);
             preencherRelatorio("mes", filtrarPorMes(ags, dataAtual), formatarMes(dataAtual), servicos, formas);
             preencherRelatorio("ano", filtrarPorAno(ags, dataAtual), dataAtual.slice(0, 4), servicos, formas);
+        });
+
+        // HIGHLIGHT SEMANA
+        divDia.addEventListener("mouseenter", () => {
+            const dataAtualHover = new Date(anoAtual, mesAtual, dia);
+            const diaSemana = dataAtualHover.getDay();
+
+            const domingo = new Date(dataAtualHover);
+            domingo.setDate(dataAtualHover.getDate() - diaSemana);
+
+            const sabado = new Date(dataAtualHover);
+            sabado.setDate(dataAtualHover.getDate() + (6 - diaSemana));
+
+            const diasCalendario = calendarioCorpo.querySelectorAll("div");
+
+            diasCalendario.forEach(div => {
+                const diaTexto = div.textContent.padStart(2, "0");
+                const dataLoop = new Date(anoAtual, mesAtual, Number(diaTexto));
+
+                div.classList.remove("semana-hover");
+                div.classList.remove("dia-hover");
+
+                if (dataLoop >= domingo && dataLoop <= sabado) {
+                    div.classList.add("semana-hover");
+                    if (dataLoop.getTime() === dataAtualHover.getTime()) {
+                        div.classList.add("dia-hover");
+                    }
+                }
+            });
+        });
+
+        divDia.addEventListener("mouseleave", () => {
+            const diasCalendario = calendarioCorpo.querySelectorAll("div");
+            diasCalendario.forEach(div => {
+                div.classList.remove("semana-hover");
+                div.classList.remove("dia-hover");
+            });
         });
 
         calendarioCorpo.appendChild(divDia);

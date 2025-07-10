@@ -141,21 +141,17 @@ header h1 {
     align-items: center;
     font-size: 15px;
     border-left: 6px solid transparent;
-
 }
 
-
-
-
 /* Cores de status */
-/* Livre / Agendado = padrão branco, não precisa declarar */
+/* Livre = padrão branco, não precisa declarar */
 
-.bloqueado {
+.bloqueado, .encaixe {
     background-color: #ffe5e5;
     /* vermelho clarinho */
 }
 
-.realizado {
+.realizado, .agendado {
     background-color: #ddfcdd;
     /* verde mais escuro */
 }
@@ -532,6 +528,7 @@ header h1 {
 
 /* Descrição com nome e serviço */
 #descricao-agendamento {
+    text-align: center;
     font-weight: bold;
     font-size: 17px;
     color: #000;
@@ -634,6 +631,7 @@ header h1 {
 #modal-realizado #info-realizado {
     margin-bottom: 10px;
     line-height: 1.4;
+    
 }
 
 
@@ -643,15 +641,18 @@ header h1 {
 }
 
 .valorNaoPago {
+
     display: none;
+    font-size: 18px;
     margin-top: 10px;
     margin-bottom: 10px;
-
 }
-
-#inputValorNaoPago {
-    width: 100px;
-    text-align: right;
+.valorNaoPago input {
+    margin-left: 10px;
+    width: 95px;
+    text-align: center;
+    font-size: 18px; 
+    
 }
 
 
@@ -664,18 +665,32 @@ header h1 {
 
 
 /* Cada linha com: [checkbox] [label] ................. [input] */
-.linha-pagamento {
-    display: flex;
-    margin-top: 5px;
+
+
+
+.linha-pagamento label {
+    justify-content: left;
+    width: 150px;
+    display: flex; 
     gap: 10px;
+    margin-bottom: 5px;
+}
+
+.linha-pagamento  {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
     margin-bottom: 5px;
 }
 
 /* Input de valor à direita */
 .valor-forma-pagamento {
-    width: 100%;
-    text-align: right;
+    font-size: 18px;
+    width: 90px;
+    text-align: center;  
 }
+
+
 
 
 #modal-agendamento-realizado {

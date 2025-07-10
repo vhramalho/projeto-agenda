@@ -195,3 +195,13 @@
   margin-right: 10;
   margin-bottom: 4px;
 }
+
+.semana-hover {
+  background-color: rgb(255, 255, 209) !important;
+  /* amarelo clarinho */
+}
+
+.dia-hover {
+  background-color: yellow !important;
+  /* amarelo mais forte */
+}
