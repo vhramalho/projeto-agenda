@@ -85,27 +85,24 @@ window.onload = () => {
 </div>
 
 <div class="conteudo-centro">
-${
-item.status === "bloqueado"
-? `<span class="nome">Bloqueado</span>`
-: `
+${item.status === "bloqueado"
+                    ? `<span class="nome">Bloqueado</span>`
+                    : `
 <span class="nome">${item.cliente || ""}</span>
 <span class="servico">${item.servico || ""}</span>
 `
-}
+                }
 </div>
 
 <div class="coluna-direita">
-${
-item.status === "realizado"
-? `<span class="icone">${item.pago ? "✅" : "⚠️"}</span>`
-: ""
-}
-${
-item.status === "realizado" && item.valor
-? `<span class="valor">R$${item.valor}</span>`
-: ""
-}
+${item.status === "realizado"
+                    ? `<span class="icone">${item.pago ? "✅" : "⚠️"}</span>`
+                    : ""
+                }
+${item.status === "realizado" && item.valor
+                    ? `<span class="valor">R$${item.valor}</span>`
+                    : ""
+                }
 </div>
 `;
 
@@ -244,18 +241,51 @@ item.status === "realizado" && item.valor
             const vazio = document.createElement("div");
             calendarioCorpo.appendChild(vazio);
         }
+        const dataSelecionada = new Date(dataAtual); // dia atual da agenda
+        const domingoDaSemana = new Date(
+            dataSelecionada.getFullYear(),
+            dataSelecionada.getMonth(),
+            dataSelecionada.getDate() - dataSelecionada.getDay()
+
+        );
+
 
         for (let dia = 1; dia <= ultimoDia; dia++) {
             const diaElemento = document.createElement("div");
             diaElemento.textContent = dia;
+
+            const dataAtualLoop = new Date(ano, mes, dia);
+
+            // Dia selecionado
+            if (
+                dataAtualLoop.getDate() === dataSelecionada.getDate() &&
+                dataAtualLoop.getMonth() === dataSelecionada.getMonth() &&
+                dataAtualLoop.getFullYear() === dataSelecionada.getFullYear()
+            ) {
+                diaElemento.style.backgroundColor = "yellow"; // amarelo forte
+                diaElemento.style.fontWeight = "bold";
+            }
+
+            // Outros dias da semana (domingo a sábado)
+            const diferenca = Math.round((dataAtualLoop - domingoDaSemana) / (1000 * 60 * 60 * 24));
+            if (diferenca >= 0 && diferenca <= 6) {
+                // só pinta se ainda não for o dia selecionado (evita sobreposição de cor)
+                if (!diaElemento.style.backgroundColor) {
+                    diaElemento.style.backgroundColor = "rgb(255, 255, 209)"; // amarelo clarinho
+                }
+            }
+
             diaElemento.addEventListener("click", () => {
                 dataAtual.setFullYear(ano, mes, dia);
                 renderizarHorarios();
                 modalCalendario.style.display = "none";
                 verificarSeMostrarBotaoHoje();
             });
+
             calendarioCorpo.appendChild(diaElemento);
         }
+
+
     }
 
     // Menu lateral
@@ -887,6 +917,37 @@ item.status === "realizado" && item.valor
             .then(() => console.log("Service Worker registrado!"))
             .catch(err => console.error("Erro no SW:", err));
     }
+
+    function verificarAtualizacao() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistration().then(reg => {
+                if (reg) {
+                    reg.update(); // força checar nova versão
+
+                    reg.addEventListener('updatefound', () => {
+                        const novoWorker = reg.installing;
+                        novoWorker.addEventListener('statechange', () => {
+                            if (novoWorker.state === 'installed') {
+                                if (navigator.serviceWorker.controller) {
+                                    alert("✅ Nova versão disponível! O app será recarregado agora.");
+                                    window.location.reload(); // aplica a nova versão
+                                } else {
+                                    alert("🆕 Aplicativo atualizado!");
+                                }
+                            }
+                        });
+                    });
+
+                    setTimeout(() => {
+                        alert("✅ Aplicativo já está na última versão.");
+                    }, 3000); // caso nenhuma atualização seja detectada
+                }
+            });
+        } else {
+            alert("Este navegador não suporta Service Workers.");
+        }
+    }
+    window.verificarAtualizacao = verificarAtualizacao;
 }
 
 
