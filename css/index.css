@@ -114,46 +114,97 @@ header h1 {
 }
 
 /* ===== LISTA DE HORÁRIOS ===== */
-.agenda {
-    padding: 12px;
-    overflow-y: auto;
-    height: calc(100vh - 140px);
 
-    /* cabeçalho + data + espaço dos botões */
+.agenda {
+padding: 12px;
+overflow-y: auto;
+height: calc(100vh - 140px);
+/* cabeçalho + data + espaço dos botões */
 }
 
 .agenda ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-bottom: 200px;
-
+list-style: none;
+display: flex;
+flex-direction: column;
+gap: 10px;
+padding-bottom: 200px;
 }
 
-.agenda li {
-
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 15px;
-    border-left: 6px solid transparent;
-}
-
-/* Cores de status */
-/* Livre = padrão branco, não precisa declarar */
-
+/* Cores por status */
 .bloqueado, .encaixe {
-    background-color: #ffe5e5;
-    /* vermelho clarinho */
+background-color: #ffe5e5; /* vermelho clarinho */
 }
 
 .realizado, .agendado {
-    background-color: #ddfcdd;
-    /* verde mais escuro */
+background-color: #ddfcdd; /* verde clarinho */
+}
+
+/* Novo layout dos horários */
+.agenda li {
+display: flex;
+align-items: center;
+justify-content: space-between;
+min-height: 75px;
+padding: 12px 16px;
+border-radius: 8px;
+font-size: 15px;
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+border-left: 6px solid transparent;
+}
+
+/* Coluna da hora */
+.coluna-esquerda {
+width: 50px;
+font-weight: bold;
+}
+
+.hora {
+font-size: 16px;
+}
+
+/* Conteúdo central: nome e serviço */
+.conteudo-centro {
+flex: 1;
+text-align: center;
+display: flex;
+flex-direction: column;
+justify-content: center;
+gap: 2px;
+}
+
+.nome {
+font-weight: bold;
+font-size: 16px;
+}
+
+.servico {
+font-size: 14px;
+}
+
+/* Coluna da direita: ícone e valor */
+.coluna-direita {
+width: 55px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+height: 100%;
+gap: 4px;
+text-align: right;
+}
+
+.coluna-direita .icone {
+font-size: 18px;
+}
+
+.coluna-direita .valor {
+font-weight: bold;
+font-size: 16px;
+}
+
+/* Oculta a coluna se não houver conteúdo */
+.coluna-direita:empty {
+display: none;
 }
 
 /* ===== BOTÕES FLUTUANTES (⬅️ e ➡️) ===== */

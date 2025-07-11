@@ -80,24 +80,33 @@ window.onload = () => {
             const li = document.createElement("li");
             li.className = item.status;
             li.innerHTML = `
+<div class="coluna-esquerda">
 <span class="hora">${item.hora}</span>
-<span class="descricao">${item.status === "bloqueado"
-                    ? "Bloqueado"
-                    : item.status === " "
-                        ? "Encaixe"
-                        : item.status === "agendado" || item.status === "realizado"
-                            ? `${item.cliente || ""} - ${item.servico || ""}`
-                            : ""
-                }
-${item.status === "realizado"
-                    ? item.pago
-                        ? " ✅"
-                        : " ⚠️"
-                    : ""}
-</span>
+</div>
 
-<span class="valor">${item.status === "realizado" && item.valor ? "R$" + item.valor : ""
-                }</span>
+<div class="conteudo-centro">
+${
+item.status === "bloqueado"
+? `<span class="nome">Bloqueado</span>`
+: `
+<span class="nome">${item.cliente || ""}</span>
+<span class="servico">${item.servico || ""}</span>
+`
+}
+</div>
+
+<div class="coluna-direita">
+${
+item.status === "realizado"
+? `<span class="icone">${item.pago ? "✅" : "⚠️"}</span>`
+: ""
+}
+${
+item.status === "realizado" && item.valor
+? `<span class="valor">R$${item.valor}</span>`
+: ""
+}
+</div>
 `;
 
             // 🔧 ADICIONADO – Clique no horário livre
