@@ -28,9 +28,9 @@ fetch("menu.html")
             tituloElemento.textContent = "Agenda";
         } else if (caminho.includes("servicos")) {
             tituloElemento.textContent = "Serviços";
-        }  else if (caminho.includes("pgtoPedentes")) {
+        } else if (caminho.includes("pgtoPedentes")) {
             tituloElemento.textContent = "Pagamentos Pendentes";
-        }else if (caminho.includes("config")) {
+        } else if (caminho.includes("config")) {
             tituloElemento.textContent = "Configurações";
         } else if (caminho.includes("relatorio")) {
             tituloElemento.textContent = "Relatório";
@@ -44,14 +44,19 @@ fetch("menu.html")
             tituloElemento.textContent = "Agenda";
         }
         const botaoWhatsapp = document.getElementById("botao-whatsapp");
-            if (botaoWhatsapp) {
-                const nomePagina = window.location.pathname.split("/").pop();
-                if (!nomePagina.includes("index")) {
-                    botaoWhatsapp.style.display = "none"
-                } else {
-                    botaoWhatsapp.addEventListener("click", abrirModalWhatsapp);
-                }
+        if (botaoWhatsapp) {
+            const nomePagina = window.location.pathname.split("/").pop();
+            if (!nomePagina.includes("index")) {
+                botaoWhatsapp.style.display = "none"
+            } else {
+                botaoWhatsapp.addEventListener("click", abrirModalWhatsapp);
             }
+        }
+        const botaoAtualizacao = document.getElementById("btnAtualizacao");
+        if (botaoAtualizacao && typeof verificarAtualizacao === "function"){
+            botaoAtualizacao.style.cursor = "pointer";
+            botaoAtualizacao.addEventListener("click", verificarAtualizacao);
+        }
     });
 
 

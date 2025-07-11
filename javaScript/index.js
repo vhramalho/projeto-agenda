@@ -765,7 +765,7 @@ ${item.status === "realizado" && item.valor
             const atual = agenda[i];
             const anterior = agenda[i - 1];
 
-            const ocupado = ["agendado", "realizado", "bloqueado"].includes(atual.status);
+            const ocupado = ["agendado", "realizado"].includes(atual.status);
             if (ocupado && anterior.status === "livre") {
                 anterior.status = "encaixe";
             }
@@ -887,9 +887,44 @@ ${item.status === "realizado" && item.valor
             let horarios = [];
 
             if (dados) {
-                horarios = dados
-                    .filter(h => h.status === "livre")
-                    .map(h => h.hora);
+                function horaParaMinutos(hora) {
+                    const [h, m] = hora.split(":").map(Number);
+                    return h * 60 + m;
+                }
+
+                const horariosOtimizados = [];
+                let blocoLivre = [];
+
+                // percorre todos os horários do dia (já estão em ordem)
+                for (let i = 0; i < dados.length; i++) {
+                    const item = dados[i];
+
+                    if (
+                        item.status === "livre" ||
+                        (item.status === "encaixe" && i > 0 && dados[i - 1].status === "livre")
+                    ) {
+                        blocoLivre.push(item.hora);
+                    } else {
+                        // Quando encontra um horário ocupado, processa o blocoLivre anterior
+                        while (blocoLivre.length >= 2) {
+                            const hora = blocoLivre[0];
+                            horariosOtimizados.push(hora);
+                            // Remove dois horários (equivale a 1h)
+                            blocoLivre.splice(0, 2);
+                        }
+                        // limpa o resto, pois não dá pra montar mais blocos inteiros
+                        blocoLivre = [];
+                    }
+                }
+
+                // Se terminar com blocoLivre sobrando
+                while (blocoLivre.length >= 2) {
+                    const hora = blocoLivre[0];
+                    horariosOtimizados.push(hora);
+                    blocoLivre.splice(0, 2);
+                }
+
+                horarios = horariosOtimizados;
             } else {
                 // gerar horários padrão de hora em hora (08:00 até 20:00)
                 for (let h = 8; h <= 20; h++) {
@@ -947,6 +982,7 @@ ${item.status === "realizado" && item.valor
             alert("Este navegador não suporta Service Workers.");
         }
     }
+
     window.verificarAtualizacao = verificarAtualizacao;
 }
 
