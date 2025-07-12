@@ -37,10 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     const dataFormatada = chave.replace("agenda_", "").split("-").reverse().join("/").slice(0, 5); // DD/MM
 
                     card.innerHTML = `
-<span class="data">${dataFormatada}</span>
-<span class="cliente">${item.cliente || "Sem nome"}</span>
-<span class="servicos">${servicosTexto || "Não informado"}</span>
-<span class="valor">R$ ${(item.valor || 0).toFixed(2)}</span>
+  <div class="linha-superior">
+    <span class="data">${dataFormatada}</span>
+    <span class="cliente">${item.cliente || "Sem nome"}</span>
+    <span class="valor">R$ ${(item.valor || 0).toFixed(2)}</span>
+  </div>
+  <div class="linha-inferior">  
+    <span class="servicos">${servicosTexto || "Não informado"}</span>
+  </div>
 `;
 
                     card.addEventListener("click", () => {

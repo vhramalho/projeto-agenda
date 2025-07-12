@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pagamentos Pendentes</title>
-    <link rel="icon"  type="image/png" href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="stylesheet" href="css/servicos.css" />
 
     <style>
@@ -15,39 +15,50 @@
             padding: 12px;
             margin-bottom: 10px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            gap: 6px;
         }
 
         .cartao-pagamento:hover {
             background-color: #f0f0f0;
         }
 
-        .cartao-pagamento span {
-            margin: 0 6px;
-            white-space: nowrap;
+        .linha-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            width: 100%;
         }
 
-        .cartao-pagamento .data {
+        .linha-superior .data {
             min-width: 60px;
             font-weight: bold;
-        }
-
-        .cartao-pagamento .cliente {
-            flex: 1;
             text-align: left;
         }
 
-        .cartao-pagamento .servicos {
-            flex: 2;
+        .linha-superior .cliente {
+            flex: 1;
+            font-weight: bold;
             text-align: center;
+            padding: 0 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .cartao-pagamento .valor {
+        .linha-superior .valor {
             min-width: 80px;
-            text-align: right;
             font-weight: bold;
+            text-align: right;
+        }
+
+        .linha-inferior {
+            text-align: center;
+            margin-left: -10px;
+            word-break: break-word;
+            width: 100%;
         }
     </style>
 </head>
