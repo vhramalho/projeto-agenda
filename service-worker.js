@@ -1,4 +1,4 @@
-const CACHE_NAME = "agenda-cache-v1.02";
+const CACHE_NAME = "agenda-cache-v1.03";
 const urlsToCache = [
     "/index.html",
     "/menu.html",
