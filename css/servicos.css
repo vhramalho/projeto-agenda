@@ -1,0 +1,15 @@
+.servico {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.servico-nome {
+  font-size: 16px;
+}
+
+.servico-valor {
+  font-size: 15px;
+  white-space: nowrap;
+}

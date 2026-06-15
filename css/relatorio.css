@@ -1,0 +1,568 @@
+/* ================================
+   PÁGINA
+================================ */
+
+.pagina-relatorio {
+  padding: 22px 16px 32px;
+}
+
+/* ================================
+   TOPO
+================================ */
+
+.relatorio-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.botao-voltar-relatorio,
+.botao-calendario-relatorio {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.relatorio-topo h1 {
+  font-size: 26px;
+  margin-top: 2px;
+}
+
+/* ================================
+   ABAS DE PERÍODO
+================================ */
+
+.abas-periodo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  padding: 5px;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.aba-periodo {
+  border: none;
+  border-radius: 14px;
+  padding: 10px 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.aba-periodo.ativa {
+  background: var(--purple-main);
+  color: #fff;
+}
+
+/* ================================
+   PERÍODO SELECIONADO
+================================ */
+
+.periodo-selecionado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.info-periodo {
+  flex: 1;
+  text-align: center;
+}
+
+.info-periodo strong {
+  font-size: 16px;
+}
+
+.info-periodo span {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.btn-periodo {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 12px;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  font-size: 24px;
+}
+
+/* ================================
+   CARDS BASE
+================================ */
+
+.card-grafico,
+.card-servicos,
+.card-recebimentos,
+.mini-card {
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  border: 1px solid var(--border-card);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.card-grafico,
+.card-servicos,
+.card-recebimentos {
+  margin-bottom: 14px;
+}
+
+.card-titulo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.card-titulo span,
+.mini-card span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.card-titulo h2 {
+  font-size: 24px;
+}
+
+.mini-card {
+  min-height: 86px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.mini-card strong {
+  font-size: 18px;
+}
+
+/* ================================
+   VARIAÇÕES
+================================ */
+
+.variacao-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.variacao-linha {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.variacao-linha .variacao-valor,
+.variacao-linha .variacao-contexto {
+  display: inline !important;
+  margin: 0;
+}
+
+.variacao-valor {
+  font-weight: 700;
+}
+
+.variacao-contexto {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.variacao-positiva {
+  color: #22c55e !important;
+}
+
+.variacao-negativa {
+  color: #ef4444 !important;
+}
+
+.variacao-neutra {
+  color: var(--text-muted);
+}
+
+/* ================================
+   KPIS
+================================ */
+
+.grade-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* Primeira linha: 4 KPIs pequenos */
+.grade-kpis.principal-kpis {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.principal-kpis .mini-card {
+  min-height: 68px;
+  padding: 10px 6px;
+  border-radius: 16px;
+  justify-content: flex-start;
+}
+
+.principal-kpis .mini-card span {
+  font-size: 9px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.principal-kpis .mini-card strong {
+  font-size: 13px;
+  line-height: 1.15;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.principal-kpis .variacao-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-height: 22px;
+  margin-top: 4px;
+  font-size: 9px;
+  white-space: normal;
+}
+
+.principal-kpis .variacao-linha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  white-space: normal;
+}
+
+.principal-kpis .variacao-contexto {
+  display: block !important;
+  margin: 0;
+  font-size: 8px;
+}
+
+.principal-kpis .variacao-vazia {
+  min-height: 22px;
+  display: block;
+}
+
+/* ================================
+   GRÁFICO DE FATURAMENTO
+================================ */
+
+.grafico-faturamento {
+  display: none;
+  width: 100%;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.grafico-faturamento.ativo {
+  display: block;
+}
+
+.grafico-faturamento svg {
+  width: 100%;
+  height: 150px;
+  display: block;
+}
+
+.grafico-faturamento .linha-faturamento {
+  fill: none;
+  stroke: #7c3aed;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.grafico-faturamento .area-faturamento {
+  opacity: 0.28;
+}
+
+.grafico-faturamento .ponto-faturamento {
+  fill: #7c3aed;
+  stroke: var(--bg-card);
+  stroke-width: 2;
+}
+
+.grafico-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.valor-selecionado-grafico {
+  min-height: 20px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.valor-selecionado-grafico strong {
+  color: var(--text-main);
+}
+
+/* ================================
+   RECEBIMENTOS
+================================ */
+
+.recebimentos-layout {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  gap: 24px;
+  align-items: center;
+}
+
+.recebimentos-lista {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.forma-recebimento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coluna-legenda,
+.coluna-valores {
+  display: flex;
+  flex-direction: column;
+}
+
+.coluna-legenda {
+  gap: 12px;
+}
+
+.coluna-valores {
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.coluna-valores strong {
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* Bolinhas das formas de pagamento */
+.bolinha {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bolinha.dinheiro {
+  background: #09db09;
+  box-shadow: 0 0 3px #09db09;
+}
+
+.bolinha.pix {
+  background: #0051ca;
+  box-shadow: 0 0 3px #0051ca;
+}
+
+.bolinha.credito {
+  background: #da14af;
+  box-shadow: 0 0 3px #da14af;
+}
+
+.bolinha.debito {
+  background: #fbff00;
+  box-shadow: 0 0 3px #fbff00;
+}
+
+/* Pizza de recebimentos */
+.grafico-pizza-recebimentos {
+  justify-self: center;
+  width: 92px;
+  height: 92px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--bg-card-light);
+  border: 1px solid var(--border-card);
+  position: relative;
+  flex-shrink: 0;
+  filter: saturate(1.15) brightness(1.08);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
+}
+
+.grafico-pizza-recebimentos::after {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+}
+
+/* ================================
+   SERVIÇOS
+================================ */
+
+.card-servicos {
+  min-height: 220px;
+}
+
+.lista-servicos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-servico {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-soft);
+  font-size: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-card);
+}
+
+.item-servico:last-child {
+  border-bottom: none;
+}
+
+.item-servico strong {
+  color: var(--text-main);
+}
+
+/* ================================
+   CALENDÁRIO
+================================ */
+
+.modal-calendario {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.calendario-container {
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  border: 1px solid var(--border-card);
+  border-radius: 22px;
+  padding: 16px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.calendario-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.cal-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  border: 1px solid var(--border-card);
+  font-size: 24px;
+}
+
+.cal-mes {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.calendario-semana,
+.calendario-corpo {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendario-semana {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.calendario-corpo div {
+  height: 38px;
+  border-radius: 12px;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.calendario-corpo div:hover,
+.dia-hover {
+  background: var(--purple-main) !important;
+  color: white;
+}
+
+.semana-hover,
+.semana-selecionada {
+  background: #1a2430 !important;
+}
+
+.dia-selecionado {
+  background: var(--purple-main) !important;
+  color: white !important;
+}
+
+/* ================================
+   RESPONSIVO
+================================ */
+
+@media (max-width: 380px) {
+  .recebimentos-layout {
+    grid-template-columns: 1fr 68px;
+    gap: 12px;
+  }
+
+  .grafico-pizza-recebimentos {
+    width: 68px;
+    height: 68px;
+  }
+
+  .grafico-pizza-recebimentos::after {
+    inset: 16px;
+  }
+}

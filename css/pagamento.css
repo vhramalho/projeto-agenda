@@ -1,0 +1,15 @@
+.pagamento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagamento-nome {
+  font-size: 16px;
+}
+
+.pagamento-taxa {
+  font-size: 15px;
+  white-space: nowrap;
+}
